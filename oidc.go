@@ -46,7 +46,7 @@ func GetOIDCToken(issuer string, clientID string, clientSecret string) (*OIDCTok
 		Scopes:       []string{oidc.ScopeOpenID, "email"},
 	}
 
-	showInstructionToGetToken(webBrowserConfig.RedirectURL, cliConfig.AuthCodeURL(state))
+	showInstructionToGetToken(webBrowserConfig.RedirectURL)
 	token, err := getTokenByWebBrowserOrCLI(webBrowserConfig, cliConfig, state)
 	if err != nil {
 		return nil, err
@@ -103,22 +103,12 @@ func getTokenByWebBrowserOrCLI(webBrowserConfig oauth2.Config, cliConfig oauth2.
 	}
 }
 
-func showInstructionToGetToken(localhostURL string, cliAuthCodeURL string) {
+func showInstructionToGetToken(localhostURL string) {
 	log.Printf("Starting OpenID Connect authentication:")
 	fmt.Printf(`
-## Automatic (recommended)
-
 Open the following URL in the web browser:
 
-%s
-
-## Manual
-
-If you cannot access to localhost, instead open the following URL:
-
-%s
-
-Enter the code: `, localhostURL, cliAuthCodeURL)
+%s`, localhostURL)
 }
 
 func generateState() (string, error) {
